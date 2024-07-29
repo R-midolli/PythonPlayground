@@ -1,40 +1,40 @@
 import PySimpleGUI as sg
 import pandas as pd
 
-# Caminho para o arquivo CSV que contém os dados de login
-csv_file = 'sample_users.csv'  # Nome do arquivo CSV com dados de usuários e senhas
+# Path to the CSV file containing login data
+csv_file = 'sample_users.csv'  # Name of the CSV file with user credentials
 
-# Carregar os dados do arquivo CSV em um DataFrame do pandas
+# Load the data from the CSV file into a pandas DataFrame
 df = pd.read_csv(csv_file)
 
-# Definir o tema e o layout da interface gráfica
+# Define the theme and layout for the GUI
 sg.theme('Reddit')
 layout = [
-    [sg.Text('Usuário'), sg.Input(key='usuario')],
-    [sg.Text("Senha"), sg.Input(key='senha', password_char="*")],
-    [sg.Checkbox("Salvar o login?")],
-    [sg.Button("Entrar")]
+    [sg.Text('Username'), sg.Input(key='username')],
+    [sg.Text("Password"), sg.Input(key='password', password_char="*")],
+    [sg.Checkbox("Remember me?")],
+    [sg.Button("Login")]
 ]
 
-# Criar uma janela com o título 'Tela de Login' e o layout definido
-janela = sg.Window('Tela de Login', layout)
+# Create a window with the title 'Login Screen' and the defined layout
+window = sg.Window('Login Screen', layout)
 
-# Loop principal da interface gráfica para monitorar eventos
+# Main event loop for the GUI to monitor events
 while True:
-    eventos, valores = janela.read()  # Ler eventos e valores da interface
-    if eventos == sg.WIN_CLOSED:  # Se a janela for fechada, sair do loop
+    event, values = window.read()  # Read events and values from the interface
+    if event == sg.WIN_CLOSED:  # If the window is closed, exit the loop
         break
-    if eventos == "Entrar":  # Se o botão 'Entrar' for clicado
-        usuario = valores["usuario"]  # Obter o valor do campo 'Usuário'
-        senha = valores['senha']      # Obter o valor do campo 'Senha'
+    if event == "Login":  # If the 'Login' button is clicked
+        username = values["username"]  # Get the value from the 'Username' field
+        password = values['password']   # Get the value from the 'Password' field
         
-        # Verificar se o usuário e a senha fornecidos correspondem a algum registro no DataFrame
-        if (df['Nome'] == usuario).any() and (df['Senha'] == senha).any():
-            sg.popup(f"Bem-vindo, {usuario}!")  # Mostrar uma mensagem de boas-vindas
-            janela.close()  # Fechar a janela após login bem-sucedido
-            break  # Sair do loop para encerrar o programa
+        # Check if the provided username and password match any records in the DataFrame
+        if (df['Name'] == username).any() and (df['Password'] == password).any():
+            sg.popup(f"Welcome, {username}!")  # Show a welcome message
+            window.close()  # Close the window after successful login
+            break  # Exit the loop to end the program
         else:
-            sg.popup("Usuário ou senha incorretos. Tente novamente.")  # Mostrar mensagem de erro
+            sg.popup("Incorrect username or password. Please try again.")  # Show an error message
 
-# Fechar a janela quando o loop terminar
-janela.close()
+# Close the window when the loop ends
+window.close()
